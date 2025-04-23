@@ -1,0 +1,187 @@
+classDiagram
+    class DBHelper {
+        - DATABASE_NAME: String
+        - DATABASE_VERSION: int
+        + insertUser(...)
+        + checkUser(...)
+        + getUserByEmail(...)
+        + updateUser(...)
+        + isUserExists(...)
+        + verifyUserPassword(...)
+        + updateUserPassword(...)
+        + deleteUserByEmail(...)
+        + insertBooking(...)
+        + updateRoomAvailability(...)
+        + getBookingsByUser(...)
+        + getUserIdByEmail(...)
+        + addServiceReservation(...)
+        + isServiceAvailable(...)
+        + getAllServiceReservations()
+        + getServiceReservationsByUserId()
+        + getRoomById(...)
+        + getAllRooms()
+        + getFeaturedRooms()
+        + updateBookingStatus(...)
+    }
+
+    class Booking {
+        - id: int
+        - userId: int
+        - roomId: int
+        - roomTitle: String
+        - roomImageUrl: String
+        - bookedDate: String
+        - roomPrice: String
+        - availability: String
+        - rating: String
+        - nights: int
+        - status: int
+        + getId()
+        + setId(...)
+        + getUserId()
+        + setUserId(...)
+        + getRoomId()
+        + setRoomId(...)
+        + getRoomTitle()
+        + setRoomTitle(...)
+        + getRoomImageUrl()
+        + setRoomImageUrl(...)
+        + getBookedDate()
+        + setBookedDate(...)
+        + getRoomPrice()
+        + setRoomPrice(...)
+        + getAvailability()
+        + setAvailability(...)
+        + getRating()
+        + setRating(...)
+        + getNights()
+        + setNights(...)
+        + getStatus()
+        + setStatus(...)
+    }
+
+    class Room {
+        - id: int
+        - rating: String
+        - type: String
+        - price: String
+        - shortDescription: String
+        - roomTitle: String
+        - imageUrl: String
+        - availability: String
+        + getId()
+        + setId(...)
+        + getRating()
+        + setRating(...)
+        + getType()
+        + setType(...)
+        + getPrice()
+        + setPrice(...)
+        + getShortDescription()
+        + setShortDescription(...)
+        + getRoomTitle()
+        + setRoomTitle(...)
+        + getImageUrl()
+        + setImageUrl(...)
+        + getAvailability()
+        + setAvailability(...)
+        + getNumericPrice()
+    }
+
+    class ServiceReservation {
+        - serviceType: String
+        - date: String
+        - time: String
+        - guestName: String
+        - userId: int
+        + getServiceType()
+        + setServiceType(...)
+        + getDate()
+        + setDate(...)
+        + getTime()
+        + setTime(...)
+        + getGuestName()
+        + setGuestName(...)
+        + getUserId()
+        + setUserId(...)
+    }
+
+    class Offer {
+        - imageResId: int
+        - title: String
+        - description: String
+        + getImageResId()
+        + getTitle()
+        + getDescription()
+    }
+
+    class NotificationItem {
+        - message: String
+        - date: String
+        + getMessage()
+        + getDate()
+    }
+
+    class FoodItem
+
+    %% Adapters (grouped)
+    class RoomAdapter
+    class BookingHistoryAdapter
+    class ServiceHistoryAdapter
+    class OfferAdapter
+    class NotificationsAdapter
+    class ImageSliderAdapter
+    class HomeAdapter
+
+    %% Activities/Fragments (grouped)
+    class MainActivity
+    class SignInActivity
+    class SignUpActivity
+    class EditProfileActivity
+    class ChangePasswordActivity
+    class ServiceReservationActivity
+    class RoomDetailActivity
+    class ViewUsersActivity
+    class HomeFragment
+    class RoomsFragment
+    class ProfileFragment
+    class NotificationFragment
+
+    %% Relationships
+    DBHelper "1" o-- "*" Booking : manages
+    DBHelper "1" o-- "*" Room : manages
+    DBHelper "1" o-- "*" ServiceReservation : manages
+    DBHelper "1" o-- "*" Offer : manages
+    DBHelper "1" o-- "*" NotificationItem : manages
+
+    Booking "*" --> "1" Room : references
+    ServiceReservation "*" --> "1" Room : (by room_id, not explicit in model)
+
+    RoomAdapter --> Room
+    BookingHistoryAdapter --> Booking
+    ServiceHistoryAdapter --> ServiceReservation
+    OfferAdapter --> Offer
+    NotificationsAdapter --> NotificationItem
+    ImageSliderAdapter --> Room
+    HomeAdapter --> Room
+
+    MainActivity ..> DBHelper : uses
+    SignInActivity ..> DBHelper : uses
+    SignUpActivity ..> DBHelper : uses
+    EditProfileActivity ..> DBHelper : uses
+    ChangePasswordActivity ..> DBHelper : uses
+    ServiceReservationActivity ..> DBHelper : uses
+    RoomDetailActivity ..> DBHelper : uses
+    ViewUsersActivity ..> DBHelper : uses
+    HomeFragment ..> DBHelper : uses
+    RoomsFragment ..> DBHelper : uses
+    ProfileFragment ..> DBHelper : uses
+    NotificationFragment ..> DBHelper : uses
+
+    MainActivity ..> HomeFragment
+    MainActivity ..> RoomsFragment
+    MainActivity ..> ProfileFragment
+    MainActivity ..> NotificationFragment
+
+    %% Legend
+    %% o-- aggregation, --> association, ..> dependency
